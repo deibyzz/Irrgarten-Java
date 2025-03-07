@@ -19,4 +19,28 @@ public class GameState {
     public GameState(String lab,String p, String m,int c, boolean w, String l){
         labyrinth=lab;players=p;monsters=m;currentPlayer=c;winner=w;log=l;
     }
+    
+    public String getLabyrinth(){
+        return labyrinth;
+    }
+    
+    public String getPlayers(){
+        return players;
+    }
+    
+    public String getMonsters(){
+        return monsters;
+    }
+    
+    public int getCurrentPlayer(){
+        return currentPlayer;
+    }
+    
+    public boolean getWinner(){
+        return winner;
+    }
+    
+    public String getLog(){
+        return log;
+    }
 }

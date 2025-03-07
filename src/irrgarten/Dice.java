@@ -20,30 +20,48 @@ public class Dice {
     static private int HEALTH_REWARD=5;
     static private float MAX_ATTACK=3.0f;
     static private float MAX_SHIELD=2.0f;
-    static private Random generator;
+    static private Random generator = new Random();
     
-    /// Considerar la implementación de dos métodos de clase privados inline
-    /// - GenerateInt()
-    /// - GenerateFloat()
-    /// Pues todos estos métodos recaen en generar un int o un float a devolver
     
+    /**
+     * Devuelve una fila o columna aleatoria del tablero
+     * @param max Numero de columnas y filas del tablero
+     * @return Entero aleatorio entre [0,max[
+     */
     static int randomPos(int max){
         return generator.nextInt(max);
     }
     
-    static public int whoStarts(int nplayers){
+    /**
+     * Elige aleatoriamente un jugador para empezar la partida
+     * @param nplayers Numero de jugadores de la partida
+     * @return Entero aleatorio entre [0,nplayers[
+     */
+    static int whoStarts(int nplayers){
         return generator.nextInt(nplayers);
     }
     
-    static public float randomIntelligence(){
+    /**
+     * Genera una cantidad de puntos de inteligencia aleatorios
+     * @return Float aleatorio entre [0,MAX_INTELLIGENCE[
+     */
+    static float randomIntelligence(){
         return generator.nextFloat(MAX_INTELLIGENCE);
     }
     
-    static public float randomStrength(){
+    /**
+     * Genera una cantidad de puntos de fuerza aleatorios
+     * @return Float aleatorio entre [0,MAX_STRENGTH[
+     */
+    static float randomStrength(){
         return generator.nextFloat(MAX_STRENGTH);
     }
     
-    static public boolean resurrectPlayer(){
+    /**
+     * Decide si un jugador revive o no en un turno dado
+     * @return True si revive, false en caso contrario
+     */
+    static boolean resurrectPlayer(){
         boolean resurrect = false;
         if(generator.nextFloat(1) < RESURRECT_PROB){
             resurrect = true;
@@ -51,40 +69,75 @@ public class Dice {
         return resurrect;
     }
     
-    static public int weaponsReward(){
+    /**
+     * Genera una cantidad de armas aleatoria como recompensa
+     * @return Entero aleatorio entre [0,WEAPONS_REWARD]
+     */
+    static int weaponsReward(){
         return generator.nextInt(WEAPONS_REWARD+1);
     }
     
-    static public int shieldsReward(){
+    /**
+     * Genera una cantidad de escudos aleatoria como recompensa
+     * @return Entero aleatorio entre [0,SHIELDS_REWARD]
+     */
+    static int shieldsReward(){
         return generator.nextInt(SHIELDS_REWARD+1);
     }
     
-    static public int healthReward(){
+    /**
+     * Genera una cantidad de vida aleatoria como recompensa
+     * @return Entero aleatorio entre [0,HEALTH_REWARD]
+     */
+    static int healthReward(){
         return generator.nextInt(HEALTH_REWARD+1);
     }
     
-    static public float weaponPower(){
+    /**
+     * Genera aleatoriamente el poder de un arma
+     * @return Float aleatorio entre [0,MAX_ATTACK[
+     */
+    static float weaponPower(){
         return generator.nextFloat(MAX_ATTACK);
     }
     
-    static public float shieldPower(){
+    /**
+     * Genera aleatoriamente la proteccion de un escudo
+     * @return Float aleatorio entre [0,MAX_SHIELD[
+     */
+    static float shieldPower(){
         return generator.nextFloat(MAX_SHIELD);
     }
     
-    static public int usesLeft(){
+    /**
+     * Genera el numero de usos restantes para un arma o escudo
+     * @return Entero aleatorio entre [0,MAX_USES]
+     */
+    static int usesLeft(){
         return generator.nextInt(MAX_USES+1);
     }
     
-    static public float intensity(float competence){
+    /**
+     * Genera la intensidad de un ataque o defensa en función de la competencia del jugador
+     * @param competence Estadística del jugador que describe el máximo ataque o defensa en un turno
+     * @return Float aleatorio entre [0,competence[
+     */
+    static float intensity(float competence){
         return generator.nextFloat(competence);
     }
     
-    static public boolean discardElement(int usesLeft){
+    /**
+     * Decide si un arma o escudo debe descartarse en este turno
+     * Cuanto menor sea el numero de usos restantes de la herramienta
+     * @param usesLeft Numero de usos restantes del arma o escudo
+     * @return True si se debe descartar, false en caso contrario
+     */
+    static boolean discardElement(int usesLeft){
         boolean discard = false;
         int conditioning = MAX_USES - usesLeft;
         int random = usesLeft();
         
-        if(random > conditioning){
+        if(random <= conditioning){
             discard = true;
         }
         
