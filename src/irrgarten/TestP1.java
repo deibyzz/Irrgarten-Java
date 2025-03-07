@@ -10,13 +10,17 @@ package irrgarten;
  */
 public class TestP1 {
     public static void main(String[] args){
-        Weapon w1 = new Weapon(Dice.weaponPower(),Dice.usesLeft());
-        
-        Shield s1 = new Shield(Dice.shieldPower(),Dice.usesLeft());
-        
-        System.out.println(w1.toString());
-        System.out.println(s1.toString());
-        System.out.println("Ataque: " + w1.attack() + "     Defensa: " + s1.protect());
-        System.out.println("Descartar arma: " + w1.discard() + "    Descartar escudo: " + s1.discard());
+        Weapon w = new Weapon(Dice.weaponPower(),Dice.usesLeft());
+        boolean discard;
+        int descartes = 0;
+        for(int i=0;i<100;i++){
+            discard = w.discard();
+            System.out.println(discard);
+            if(discard){
+                descartes++;
+            }
+        }
+        System.out.println(w.toString());
+        System.out.println(descartes);
     }
 }

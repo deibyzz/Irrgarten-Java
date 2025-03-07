@@ -134,10 +134,9 @@ public class Dice {
      */
     static boolean discardElement(int usesLeft){
         boolean discard = false;
-        int conditioning = MAX_USES - usesLeft;
-        int random = usesLeft();
+        float conditioning = (float)usesLeft / MAX_USES;
         
-        if(random <= conditioning){
+        if(generator.nextFloat() >= conditioning){
             discard = true;
         }
         

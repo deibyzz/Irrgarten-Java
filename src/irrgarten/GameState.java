@@ -17,7 +17,12 @@ public class GameState {
     private String log;
     
     public GameState(String lab,String p, String m,int c, boolean w, String l){
-        labyrinth=lab;players=p;monsters=m;currentPlayer=c;winner=w;log=l;
+        labyrinth=lab;
+        players=p;
+        monsters=m;
+        currentPlayer=c;
+        winner=w;
+        log=l;
     }
     
     public String getLabyrinth(){
