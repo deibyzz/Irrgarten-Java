@@ -138,9 +138,19 @@ public class Player {
      * @return Cadena con las características del jugador
      */
     public String toString(){
-        return (name + " Int: " + intelligence 
-                + " Str: " + strength + " Health: " + health 
-                + " Pos: (" + row + "," + col + ")");
+        String info = name + " I: " + intelligence 
+                + " S: " + strength + " HP: " + health 
+                + " Pos: (" + row + "," + col + ") {";
+        for(int i=0;i<weapons.size();i++){
+            info += weapons.get(i).toString();
+        }
+        
+        info += "} {";
+        
+        for(int i=0;i<shields.size();i++){
+            info += shields.get(i).toString();
+        }
+        return info;
     }
     
     /**
