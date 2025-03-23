@@ -55,12 +55,7 @@ public class Monster {
      * @return true si la vida del monstruo ha llegado a 0, false en otro caso
      */
     public boolean dead(){
-        boolean dead = false;
-        if(health <= 0){
-            dead = true;
-        }
-        
-        return dead;
+        return health <= 0;
     }
     
     /**
@@ -78,8 +73,8 @@ public class Monster {
      * @return Cadena con las características del monstruo
      */
     public String toString(){
-        return ("Monster: " + name + " Int: " + intelligence 
-                + " Str: " + strength + " Health: " + health 
+        return ("Monster: " + name + " I: " + intelligence 
+                + " S: " + strength + " HP: " + health 
                 + " Pos: (" + row + "," + col + ")");
     }
     

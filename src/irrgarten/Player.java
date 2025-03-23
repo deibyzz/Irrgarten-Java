@@ -141,15 +141,17 @@ public class Player {
         String info = name + " I: " + intelligence 
                 + " S: " + strength + " HP: " + health 
                 + " Pos: (" + row + "," + col + ") {";
-        for(int i=0;i<weapons.size();i++){
-            info += weapons.get(i).toString();
+        for(int i=0;i<weapons.size()-1;i++){
+            info += weapons.get(i).toString() + ',';
         }
         
-        info += "} {";
+        info += weapons.getLast().toString() + "} {";
         
-        for(int i=0;i<shields.size();i++){
+        for(int i=0;i<shields.size()-1;i++){
             info += shields.get(i).toString();
         }
+        
+        info += shields.getLast().toString() + "}";
         return info;
     }
     
