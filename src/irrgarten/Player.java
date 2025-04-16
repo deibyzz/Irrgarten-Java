@@ -106,10 +106,9 @@ public class Player {
      * @return direction en caso de ser valida, de lo contrario la primera direccion de validMoves
      */
     public Directions move(Directions direction, ArrayList<Directions> validMoves){
-        int size = validMoves.size();
         boolean contained = validMoves.contains(direction);
         Directions move_dir;
-        if(size>0 && !contained){
+        if(!(validMoves.isEmpty() || contained)){
             move_dir = validMoves.get(0); //No se utiliza getFirst() ni getLast() porque no existen en todas las versiones.á
         }
         else{
