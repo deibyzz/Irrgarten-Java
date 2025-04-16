@@ -32,11 +32,11 @@ public class Player {
      * @param ip (Intelligence Points) puntos de inteligencia del jugador
      * @param sp (Strength Points) puntos de fuerza del jugador
      */
-    public Player(char player_number, float ip, float sp){
-        number = player_number;
-        name = "Player #" + player_number;
-        intelligence = ip;
-        strength = sp;
+    public Player(char number, float intelligence, float strength){
+        this.number = number;
+        name = "Player #" + number;
+        this.intelligence = intelligence;
+        this.strength = strength;
         health = INITIAL_HEALTH;
         row = col = NULL_POS;
     }
@@ -95,18 +95,27 @@ public class Player {
      * Getter del Nº de jugador
      * @return Nº de jugador
      */
-    public int getNumber(){
+    public char getNumber(){
         return number;
     }
     
     /**
-     * Método por terminar
-     * @param direction
-     * @param validMoves
-     * @return 
+     * Devuelve la direccion en la que se movera el jugador
+     * @param direction Direccion en la que se quiere mover el jugador
+     * @param validMoves Direcciones validas para el movimiento del jugador
+     * @return direction en caso de ser valida, de lo contrario la primera direccion de validMoves
      */
-    public Directions move(Directions direction, Directions[] validMoves){
-        throw new UnsupportedOperationException();
+    public Directions move(Directions direction, ArrayList<Directions> validMoves){
+        int size = validMoves.size();
+        boolean contained = validMoves.contains(direction);
+        Directions move_dir;
+        if(size>0 && !contained){
+            move_dir = validMoves.get(0); //No se utiliza getFirst() ni getLast() porque no existen en todas las versiones.á
+        }
+        else{
+            move_dir = direction;
+        }
+        return move_dir;
     }
     
     /**
@@ -118,19 +127,29 @@ public class Player {
     }
     
     /**
-     * Método por terminar
-     * @param recievedAttack
-     * @return 
+     * El jugador trata de defenderse del ataque en base a su inteligencia
+     * @param recievedAttack Ataque del que se defiente el jugador
+     * @return true si ha muerto o perdido por golpes consecutivos, false en caso contrarioú
      */
     public boolean defend(float recievedAttack){
         return manageHit(recievedAttack);
     }
     
     /**
-     * Método por terminar
+     * Genera un numero aleatorio de armas, escudos y vida extra que se le
+     * añadiran al jugador
      */
     public void recieveReward(){
-        throw new UnsupportedOperationException();
+        int wReward = Dice.weaponsReward();
+        int sReward = Dice.shieldsReward();
+        for(int i = 1; i <= wReward;i++){
+            recieveWeapon(newWeapon());
+        }
+        for(int i = 1; i <= sReward;i++){
+            recieveShield(newShield());
+        }
+        
+        health += Dice.healthReward();
     }
     
     /**
@@ -141,34 +160,56 @@ public class Player {
         String info = name + " I: " + intelligence 
                 + " S: " + strength + " HP: " + health 
                 + " Pos: (" + row + "," + col + ") {";
-        for(int i=0;i<weapons.size()-1;i++){
-            info += weapons.get(i).toString() + ',';
+        if(!weapons.isEmpty()){
+            for(int i=0;i<weapons.size()-1;i++){
+                info += weapons.get(i).toString() + ',';
+            }
+
+            info += weapons.get(weapons.size()-1).toString() + "} {";
         }
         
-        info += weapons.getLast().toString() + "} {";
-        
-        for(int i=0;i<shields.size()-1;i++){
-            info += shields.get(i).toString();
+        if(!shields.isEmpty()){
+            for(int i=0;i<shields.size()-1;i++){
+                info += shields.get(i).toString();
+            }
+
+            info += shields.get(shields.size()-1).toString() + "}";
         }
-        
-        info += shields.getLast().toString() + "}";
         return info;
     }
     
     /**
-     * Método por terminar
-     * @param w 
+     * Comprueba si se descartan las armas del jugador una a una, si el arma w
+     * cabe en la lista de armas se añade
+     * @param w Arma que se trata de añadir
      */
     private void recieveWeapon(Weapon w){
-        throw new UnsupportedOperationException();
+        for(int i = 0; i < weapons.size();i++){
+            if(weapons.get(i).discard()){
+                weapons.remove(i);
+            }
+        }
+        
+        if(weapons.size() < MAX_WEAPONS){
+            weapons.add(w);
+        }
     }
     
     /**
-     * Método por terminar
-     * @param w 
+     * Comprueba si se descartan los escudos del jugador uno a uno, si el escudo
+     * s cabe en la lista de escudos se añade
+     * @param s Escudo que se trata de añadir
      */
-    private void recieveShield(Shield w){
-        throw new UnsupportedOperationException();
+    private void recieveShield(Shield s){
+        for(int i = 0; i < shields.size();i++){
+            if(shields.get(i).discard()){
+                shields.remove(i);
+            }
+        }
+        
+        if(shields.size() < MAX_SHIELDS){
+            shields.add(s);
+        }
     }
     
     /**
@@ -222,12 +263,29 @@ public class Player {
     }
     
     /**
-     * Método por terminar
-     * @param recievedAttack
-     * @return 
+     * Simula la defensa del golpe recievedAttack
+     * @param recievedAttack Ataque recibido
+     * @return true si ha muerto o perdido por golpes consecutivos, false en caso contrario
      */
     private boolean manageHit(float recievedAttack){
-        throw new UnsupportedOperationException();
+        float defense = defensiveEnergy();
+        boolean lose;
+        if(defense < recievedAttack){
+            gotWounded();
+            incConsecutiveHits();
+        }
+        else{
+            resetHits();
+        }
+        
+        if(consecutiveHits == HITS2LOSE || dead()){
+            resetHits();
+            lose = true;
+        }
+        else{
+            lose = false;
+        }
+        return lose;
     }
     
     /**

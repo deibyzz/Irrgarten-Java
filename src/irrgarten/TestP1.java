@@ -3,24 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package irrgarten;
-
+import irrgarten.UI.TextUI;
+import irrgarten.controller.Controller;
 /**
  * Prueba practica 1
  * @author deibyss
  */
 public class TestP1 {
     public static void main(String[] args){
-        Weapon w = new Weapon(Dice.weaponPower(),Dice.usesLeft());
-        boolean discard;
-        int descartes = 0;
-        for(int i=0;i<100;i++){
-            discard = w.discard();
-            System.out.println(discard);
-            if(discard){
-                descartes++;
-            }
-        }
-        System.out.println(w.toString());
-        System.out.println(descartes);
+        Game partida = new Game(2);
+        Controller controlador = new Controller(partida,new TextUI());
+        controlador.play();
     }
 }
