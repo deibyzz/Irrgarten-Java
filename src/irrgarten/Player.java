@@ -107,12 +107,9 @@ public class Player {
      */
     public Directions move(Directions direction, ArrayList<Directions> validMoves){
         boolean contained = validMoves.contains(direction);
-        Directions move_dir;
+        Directions move_dir = direction;
         if(!(validMoves.isEmpty() || contained)){
             move_dir = validMoves.get(0); //No se utiliza getFirst() ni getLast() porque no existen en todas las versiones.á
-        }
-        else{
-            move_dir = direction;
         }
         return move_dir;
     }
@@ -141,9 +138,12 @@ public class Player {
     public void recieveReward(){
         int wReward = Dice.weaponsReward();
         int sReward = Dice.shieldsReward();
+        System.out.println("Numero de armas: " + wReward);
+        System.out.println("Numero de escudos: " + sReward);
         for(int i = 1; i <= wReward;i++){
             recieveWeapon(newWeapon());
         }
+                
         for(int i = 1; i <= sReward;i++){
             recieveShield(newShield());
         }
